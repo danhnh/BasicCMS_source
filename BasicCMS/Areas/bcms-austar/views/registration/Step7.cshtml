@@ -1,0 +1,64 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeHost7(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Bank Account Details for Receiving Payments
+	</legend>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="BankName">Bank name</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("BankName", Model.BankName, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="BankBSB">Bank BSB</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("BankBSB", Model.BankBSB, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="BankAccountName">Bank account name</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("BankAccountName", Model.BankAccountName, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="BankAccountNumber">Bank account number</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("BankAccountNumber", Model.BankAccountNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

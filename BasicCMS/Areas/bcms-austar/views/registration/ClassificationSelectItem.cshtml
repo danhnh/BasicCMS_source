@@ -1,0 +1,62 @@
+﻿@using bcms.austar.Content.Resources
+@model BasicCMS.Models.ClassificationRenderItem
+@{ 
+	var classifications = Model.Classifications.Where(x => x.SchemeCode.Equals(Model.SchemeCode));
+	string controlName = "";
+	string controlId = "";
+	if ( Model.GroupIndex >= 0) {
+		controlName = string.Format("{0}[{1}]", Model.SchemeCode, Model.GroupIndex);
+		controlId = string.Format("{0}__{1}", Model.SchemeCode, Model.GroupIndex);
+		if(Model.GroupIndex2 >= 0) {
+			controlName += string.Format("[{0}]", Model.GroupIndex2);
+			controlId += string.Format("__{0}", Model.GroupIndex2);
+		}
+	} else {
+		controlName = controlId = Model.SchemeCode;
+	}
+	ViewData["SelectedClassification"] = Model.SelectedValue;
+}
+<div class="col-sm-@Model.Column">
+	<div class="form-group">
+		<label class="bcms-content-titles" for="@controlName">@Model.Title @if(Model.IsRequired) {
+			<i class="fa fa-asterisk text-danger"></i>
+		}</label>
+		<div class="bcms-field-wrapper">
+			<select @if (Model.IsRequired) {
+				@:data-val="true" data-val-required="@RegistrationGlobalization.Required"
+					} 
+				id="@controlId" name="@controlName" @if (Model.ShowDetailsByIndex) {
+				@:showsetailsbyindex="true"  
+				}>
+@Html.Partial("DropdownListPartial", classifications)
+			</select>
+@if (Model.IsRequired) {
+			<span class="bcms-field-validation-valid" data-valmsg-for="@controlName" data-valmsg-replace="true"></span>
+}
+		</div>
+	</div>
+</div>
+@if (Model.RenderMoreInfo && classifications.Count(x => x.RequireMoreInfo)>0) {
+<div class="col-sm-@Model.ColumnForMoreInfo">
+	<div class="form-group" id="info_@(controlId)" style="display: none">
+		<label class="bcms-content-titles" for="@(controlName)_info"></label>
+		<div class="bcms-field-wrapper">
+			@Html.TextBox(string.Format("{0}_info", controlName), Model.GetClassificationInfoValue(Model.SchemeCode, Model.GroupIndex),
+				new { @class = "bcms-field-text data-val-ignore", @id = string.Format("{0}_info", controlId), @autocomplete = "off", @data_val = "true", @data_val_required = "This field is required" })
+			<span class="bcms-field-validation-valid" data-valmsg-for="@(controlName)_info" data-valmsg-replace="true"></span>
+		</div>
+	</div>
+</div>
+}
+@{ 
+	ViewData["SelectedClassification"] = null;
+}
+@*<div class="col-sm-@Model.ColumnForMoreInfo">
+	<div class="form-group" id="info_@(Model.SchemeCode)[@cwInfo.Id]" style="display: none">
+		<label class="bcms-content-titles" for="@(Model.SchemeCode)_info[@cwInfo.Id]"></label>
+		<div class="bcms-field-wrapper">
+			@Html.TextBox(string.Format("{0}_info[{1}]", Model.SchemeCode, cwInfo.Id), "", new { @class = "bcms-field-text data-val-ignore", @autocomplete = "off", @data_val = "true", @data_val_required = "This field is required" })
+			<span class="bcms-field-validation-valid" data-valmsg-for="@(Model.SchemeCode)_info[@cwInfo.Id]" data-valmsg-replace="true"></span>
+		</div>
+	</div>
+</div>*@

@@ -1,0 +1,157 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeHostFamily(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Host Family
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+		   Classifications = Model.Classifications,
+		   SchemeCode = "H_AnySmoker",
+		   Title = "Does anyone in your family smoke?", Column = 6, IsRequired = true,
+		   RenderMoreInfo = false
+	   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_StudentSmoke,
+	   Title = "Are you able to accommodate students that smoke?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = "H_Ethnicity",
+	   Title = "What is your cultural background/ethnicity?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = "H_OtherEthnicity",
+	   Title = "Other background/ethnicity?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = "H_Languages",
+	   Title = "Language spoken at home", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = "H_OtherLanguages",
+	   Title = "Other language spoken at home", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+	</div>
+
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_MainReligion,
+	   Title = "What is the main religion at home?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 4
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_HaveHosted,
+	   Title = "Have you hosted international students in the past?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 12
+   })
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Family">Be sure to mention pastime and interests, hobbies, likes and dislikes. Any information here will be shared with your allocated placement and will help them understand your family and the experience they can look forward to.</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("Family", Model.Family, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Home">Be sure to mention any architectural features, atmosphere to expect and location based commentary. Any information here will be shared with your allocated placements and will help them understand your home and the experience they can look forward to.</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("Home", Model.Home, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<legend>
+		Details regarding Pets
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_HavePets,
+	   Title = "Do you have pets?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="col-sm-12 clearfix">
+			<div class="form-group" id="info_@HostSchemeCodes.H_HavePets" style="display: none">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = HostSchemeCodes.H_PetsLiveInside,
+			   Title = "Do the pets live inside the house?", Column = 6, IsRequired = true, RenderMoreInfo = false
+		   })
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="@HostSchemeCodes.H_WhatPets">What pets?</label>
+						<div class="bcms-checkbox-block">
+							@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_WhatPets)))
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="OtherAboutPets">Other basic notes about pets</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("OtherAboutPets", Model.OtherAboutPets, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="EmergencyContact">Emergency Contact Details</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("EmergencyContact", Model.EmergencyContact, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="LifestyleComments">Comments</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("LifestyleComments", Model.LifestyleComments, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

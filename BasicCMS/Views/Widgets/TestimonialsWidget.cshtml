@@ -1,0 +1,14 @@
+﻿@using BetterCms.Module.Root.Mvc.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+<div class="feedback @(Model.GetOptionValue<string>("additionClass"))">
+	@for (int i = 0; i < Model.GetOptionValue<int>("icons"); i++) {
+		<img src="http://media.istockphoto.com/photos/beautiful-young-woman-with-long-curly-red-hair-picture-id509107452" alt="..." class="face-icon @(Model.GetOptionValue<bool>("iconOnRight")?"pull-right":"pull-left")">
+	}
+	<div class="text-italic text-justify m-b-sm">
+		<i class="fa fa-quote-left fa-pull-left"></i> @(Model.GetOptionValue<string>("content"))
+		<div>
+			<span class="text-red m-l-lg"><i class="fa fa-heart"></i> <i class="fa fa-heart"></i> <i class="fa fa-heart"></i></span>
+			<span class="text-blue font-semibold text-italic">@(Model.GetOptionValue<string>("writer"))</span>
+		</div>
+	</div>
+</div>

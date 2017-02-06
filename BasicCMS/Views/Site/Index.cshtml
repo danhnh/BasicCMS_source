@@ -1,0 +1,54 @@
+﻿@using BasicCMS.Content.Resources
+@model BasicCMS.Models.SitemapMenuViewModel
+@{
+	if (Model.Page != null && !string.IsNullOrEmpty(Model.Page.LanguageCode)) {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo(Model.Page.LanguageCode);
+	} else {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo("en-CA");
+	}
+}
+@if (Model != null && Model.MenuItems != null) {
+	if (Model.PageId.HasValue) {
+		<div class="flagbar">
+			@foreach (var lang in Model.LanguageCodes) {
+				var pageUrl = "#";
+				if (Model.Page != null) { pageUrl = Model.Page.PageUrl; }
+				if (Model.PageTranslations != null && Model.PageTranslations.Count(x => x.LanguageCode.Equals(lang) && x.IsPublished) > 0) {
+					pageUrl = Model.PageTranslations.First(x => x.LanguageCode.Equals(lang) && x.IsPublished).Url;
+				}
+				<a href="@pageUrl" class="flag-icon flag-icon-@lang">
+					&nbsp;
+				</a>
+			}
+		</div>
+	}
+	<ul class="nav navbar-nav header-nav">
+		@foreach (var item in Model.MenuItems) {
+			if (!item.IsPublished) { continue; }
+			<li><a href="@item.Url">@item.Caption.ToUpper()</a></li>
+		}
+		@if (User.Identity.IsAuthenticated) {
+			<li><a href="~/logout/">@BasicCMSResource.Logout</a></li>
+		} else {
+			<li><a href="~/login/">@BasicCMSResource.Login</a></li>
+		}
+	</ul>
+}
+	@*<h2>New <i>@(Model.LanguageCode ?? "default Language")</i> items:</h2>
+		@if (Model != null && Model.MenuItems != null)
+		{
+			foreach (var item in Model.MenuItems)
+			{
+				@item.Caption <a href="@item.Url"><span>@item.Url</span></a> @(item.IsPublished ? "(Live)" : "")<br />
+			}
+		}
+		@if (Model != null && Model.RenderIFrame && Model.LanguageCodes != null)
+		{
+			foreach (var lang in Model.LanguageCodes)
+			{
+				<hr />
+
+
+				<iframe style="padding: 0; overflow: auto; border: 0; width: 1000px; height: 200px;" src="~/SitemapMenu?languageCode=@(lang)"></iframe>
+			}
+		}*@

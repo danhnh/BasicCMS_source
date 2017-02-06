@@ -1,0 +1,231 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model StudentRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeStudent(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Homestay Student Story
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	Classifications = Model.Classifications,
+	SchemeCode = StudentSchemeCodes.S_AccommodationType,
+	Title = "Accommodation type", Column = 4, IsRequired = true,
+	ColumnForMoreInfo = 4
+})
+	</div>	
+	<div class="row">
+	@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_HomeStayInThePast,
+	   Title = "Have you been a homestay student in the past?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 11
+   })
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Yourself">Please describe yourself:</label>
+				<h5>Be sure to mention pastime and interests, hobbies, likes and dislikes. Any information here will be shared with your allocated Homestay Family and will help them understand you better.</h5>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("Yourself", Model.Yourself, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Family">Please describe your family back home:</label>
+				<h5>Be sure to mention any relatives or siblings you may have, your likes and dislikes and hobbies you have as a family back home. Any information here will be shared with your allocated Homestay Family will help them understand you better.</h5>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("Family", Model.Family, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="FavouriteFood">What is your favourite food?</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("FavouriteFood", Model.FavouriteFood, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<legend>
+		About you
+	</legend>
+	<div class="row">
+	@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Ethnicity,
+	   Title = "Ethnicity", Column = 4, IsRequired = true
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Religion,
+	   Title = "What is your Religion?", Column = 4, IsRequired = true
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+	   SchemeCode = StudentSchemeCodes.S_Languages,
+	   Title = "How many languages do you speak?", Column = 4, IsRequired = true
+   })
+		@for (int r1 = 0; r1 < Model.Classifications.Count(x => x.SchemeCode.Equals(StudentSchemeCodes.S_Languages)); r1++) {
+			var lang = Model.GetLanguage(r1);
+			<div id="info_@(StudentSchemeCodes.S_Languages)_Index_@r1" class="info_group row" style="display: none">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+				   SchemeCode = "L_Languages", GroupIndex = r1, SelectedValue = lang.Language,
+				   Title = string.Format("Language {0}", r1 + 1), Column = 6, IsRequired = false,
+				   ColumnForMoreInfo = 6
+			   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+				   SchemeCode = "L_LanguageProficiency", GroupIndex = r1, SelectedValue = lang.Proficiency,
+				   Title = "Language proficiency", Column = 6, IsRequired = false,
+				   ColumnForMoreInfo = 6
+			   })
+			</div>
+				}
+	</div>
+	<legend>
+		Details regarding Pets
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_WithPets,
+	   Title = "Can you live with pets?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="col-sm-11">
+			<div class="form-group" id="info_@StudentSchemeCodes.S_WithPets" style="display: none">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = StudentSchemeCodes.S_PetsLiveInside,
+			   Title = "Can you live with pets inside the house?", Column = 6, IsRequired = true, RenderMoreInfo = false
+		   })
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="@StudentSchemeCodes.S_WhatPets">Type of pets?</label>
+						<div class="bcms-checkbox-block">
+							@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(StudentSchemeCodes.S_WhatPets)))
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<legend>
+		Details Regarding Insurances
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_TravelInsurance,
+	   Title = "Do you have Travel Insurance?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@StudentSchemeCodes.S_TravelInsurance" style="display:none">
+				<label class="bcms-content-titles" for="TravelInsuranceProvider">Insurance provider</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("TravelInsuranceProvider", Model.TravelInsuranceProvider, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+				<label class="bcms-content-titles" for="TravelInsuranceNumber">Insurance policy number</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("TravelInsuranceNumber", Model.TravelInsuranceNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+				<label class="bcms-content-titles" for="TravelInsuranceExpiryDate">Insurance policy expiry date</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("TravelInsuranceExpiryDate", Model.TravelInsuranceExpiryDate, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+					<span class="bcms-field-validation-error" data-valmsg-for="TravelInsuranceExpiryDate" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<legend>
+		Guardianship Details
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_GuardianshipRequested,
+	   Title = "Guardianship Requested?", Column = 4, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@StudentSchemeCodes.S_GuardianshipRequested" style="display:none">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = StudentSchemeCodes.S_Guardianship,
+			   Title = "Guardianship", Column = 6, IsRequired = true,
+			   ColumnForMoreInfo = 6
+		   })
+			</div>
+		</div>
+	</div>
+	<legend>
+		Student Arrival Details
+	</legend>
+	<div class="row">
+	@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_AirportPickup,
+	   Title = "Do you require airport pickup?", Column = 4, IsRequired = true
+   })
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="ArrivalDate">Arrival date</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("ArrivalDate", Model.ArrivalDate, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+					<span class="bcms-field-validation-error" data-valmsg-for="ArrivalDate" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="ArrivalTime">Arrival time</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("ArrivalTime", Model.ArrivalTime, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Airline">Carrier (Airline)</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("Airline", Model.Airline, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="FlightNumber">Flight number</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("FlightNumber", Model.FlightNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Next" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

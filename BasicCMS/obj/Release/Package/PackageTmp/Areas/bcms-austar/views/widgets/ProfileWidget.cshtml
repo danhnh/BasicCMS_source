@@ -1,0 +1,5 @@
+﻿@if (User.IsInRole("AustarHost")) {
+	Html.RenderPartial("~/Areas/bcms-austar/Views/Widgets/HostApplicationForm.cshtml");
+} else if (User.IsInRole("AustarStudent")) {
+	Html.RenderPartial("~/Areas/bcms-austar/Views/Widgets/StudentApplicationForm.cshtml");
+}

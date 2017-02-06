@@ -1,0 +1,7 @@
+﻿@if (User.IsInRole("AustarStudent")) {
+<ul class="nav navbar-nav color-nav nav-justified" style="margin: 0px; padding: 0px; margin-bottom: 10px;">
+	<li><a href="/student/apply/?step=studentpage2">Page 1</a></li>
+	<li><a href="/student/apply/?step=studentpage3">Page 2</a></li>
+</ul>
+}
+@{ Html.RenderAction("CreateStudent", "Registration", new { Area = "bcms-austar", step = Request.Params["step"] }); }

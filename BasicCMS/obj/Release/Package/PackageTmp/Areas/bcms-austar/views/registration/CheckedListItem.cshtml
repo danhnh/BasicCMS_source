@@ -1,0 +1,24 @@
+﻿@using bcms.austar.Models
+@using BasicCMS.Models
+@model CheckedListRenderItem
+@{
+	var r = Model.Group;
+	List<RoomInfo> rooms = null;
+	if (ViewData["Rooms"] != null && r > -1) {
+		rooms = (ViewData["Rooms"] as List<RoomInfo>).Where(x => x.Room.RoomIndex == r).ToList();
+	}
+}
+@foreach (var c in Model.Classifications.OrderBy(x => x.SortOrder)) {
+	var room = rooms != null ? rooms.FirstOrDefault(x => x.Classification.Equals(c)) : null;
+	<div class="bcms-checkbox-holder@(c.RequireMoreInfo?" has-moreinfo":"")">
+		<input id="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_checked[@c.Id]" name="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_checked[@c.Id]" value="true" type="checkbox" @((room!=null && room.IsSelected)? "checked=\"checked\"" : "")>
+		<input name="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_checked[@c.Id]" value="false" type="hidden">
+		<div class="bcms-checkbox-label bcms-js-edit-label">@c.Name</div>
+		@if (c.RequireMoreInfo) {
+			<div style="display: none" class="input-more-info">
+				<input class="bcms-field-text data-val-ignore" data-checkbox="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_checked[@c.Id]" data-val="true" data-val-required="This field is required" id="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_info[@c.Id]" name="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_info[@c.Id]" type="text" value="@(room!=null?room.Description:"")">
+				<span class="bcms-field-validation-valid" data-valmsg-for="@(c.SchemeCode+(r<0?"":string.Format("[{0}]",r)))_info[@c.Id]" data-valmsg-replace="true"></span>
+			</div>
+		}
+	</div>
+}

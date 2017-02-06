@@ -1,0 +1,48 @@
+﻿@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Installation
+@model BetterCms.Core.DataContracts.IPage
+@{
+	Layout = "~/Areas/bcms-Root/Views/Shared/BaseLayout.cshtml";
+}
+@section CmsHeadScripts {
+	<meta charset="utf-8" />
+	@RenderSection("CmsHeadScripts", false)
+}
+@section Styles {
+	<meta name="twitter:card" content="summary" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+	<meta name="google" content="notranslate">
+	@RenderSection("Styles", false)
+	@(Html.RenderStyleSheets<InstallationModuleDescriptor>())
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,500,500i,700,700i&subset=vietnamese" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,700&subset=vietnamese" rel="stylesheet" />
+	<link href="~/Content/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+	<link href="~/file/bcms-root/styles/bcms.root.min.css" rel="stylesheet" />
+	@Styles.Render("~/Content/css")
+}
+@section HeadScripts {
+	@RenderSection("HeadScripts", false)
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+}
+<div class="page">
+	<header class="bcms-page-header">
+		<div class="page-frame clearfix">
+			<div>
+				@RenderSection("CMSHeader", false)
+			</div>
+		</div>
+	</header>
+	<div class="page-block">
+		<div class="page-frame clearfix">
+			@RenderSection("CMSMainContent", false)
+			@RenderBody()
+		</div>
+	</div>
+</div>
+<footer class="page-footer">
+	<div class="page-frame clearfix a">
+		@RenderSection("CMSFooter", false)
+	</div>
+</footer>

@@ -1,0 +1,28 @@
+﻿@using bcms.austar.Models
+@model IEnumerable<Classification>
+@{
+	var r = -1;
+	if (ViewBag.CheckListIndex != null) {
+		r = (int)ViewBag.CheckListIndex;
+	}
+	List<UserChoice> choices = ViewData["Choices"] as List<UserChoice>;
+	List<RoomInfo> rooms = null;
+	if (ViewData["Rooms"] != null && ViewData["Group1"] != null) {
+		rooms = (ViewData["Rooms"] as List<RoomInfo>).Where(x => x.Room.RoomIndex == (int)ViewData["Group1"]).ToList();
+	}
+}
+@foreach (var c in Model.OrderBy(x => x.SortOrder)) {
+	var choice = choices.FirstOrDefault(x => x.Classification.Equals(c));
+	var room = rooms != null ? rooms.FirstOrDefault(x => x.Classification.Equals(c)) : null;
+	<div class="bcms-checkbox-holder@(c.RequireMoreInfo?" has-moreinfo":"")">
+		<input id="@(c.SchemeCode)_checked@(r<0?"":string.Format("[{0}]",r))[@c.Id]" name="@(c.SchemeCode)_checked@(r<0?"":string.Format("[{0}]",r))[@c.Id]" value="true" type="checkbox" @(((choice!=null && choice.IsSelected)||(room!=null && room.IsSelected))? "checked=\"checked\"" : "")>
+		<input name="@(c.SchemeCode)_checked@(r<0?"":string.Format("[{0}]",r))[@c.Id]" value="false" type="hidden">
+		<div class="bcms-checkbox-label bcms-js-edit-label">@c.Name</div>
+		@if (c.RequireMoreInfo) {
+			<div style="display: none" class="input-more-info">
+				<input class="bcms-field-text data-val-ignore" data-checkbox="@(c.SchemeCode)_checked@(r<0?"":string.Format("[{0}]",r))[@c.Id]" data-val="true" data-val-required="This field is required" id="@(c.SchemeCode)_info@(r<0?"":string.Format("[{0}]",r))[@c.Id]" name="@(c.SchemeCode)_info@(r<0?"":string.Format("[{0}]",r))[@c.Id]" type="text" value="@(choice!=null?choice.Description:"")@(room!=null?room.Description:"")">
+				<span class="bcms-field-validation-valid" data-valmsg-for="@(c.SchemeCode)_info@(r<0?"":string.Format("[{0}]",r))[@c.Id]" data-valmsg-replace="true"></span>
+			</div>
+		} 
+	</div>
+}

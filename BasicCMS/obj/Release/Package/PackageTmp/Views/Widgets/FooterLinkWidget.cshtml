@@ -1,0 +1,37 @@
+﻿@using BasicCMS.Content.Resources
+@using BasicCMS.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+@{ 
+	if (Model.Page != null && !string.IsNullOrEmpty(Model.Page.LanguageCode)) {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo(Model.Page.LanguageCode);
+	} else {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo("en-CA");
+	}
+}
+<div class="dark-panel container">
+	<div class="col-sm-4">
+		<div>@BasicCMSResource.Customer_Service</div>
+		<div>Hotline: @OptionsHelper.GetValue(Model.Options, "HotlinePhoneNumber")</div>
+	</div>
+	<div class="col-sm-4">
+		@BasicCMSResource.Social_Network
+		<div id="social-bar">
+			<a class="fa-stack fa-lg" style="color:#3B5998" href="https://www.facebook.com/pages/Open-Source-Hacker/181710458567630">
+				<i class="fa fa-square fa-stack-2x"></i>
+				<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+			</a>
+			<a class="fa-stack fa-lg" style="color:#00ACED" href="https://www.facebook.com/pages/Open-Source-Hacker/181710458567630">
+				<i class="fa fa-square fa-stack-2x"></i>
+				<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+			</a>
+			<a class="fa-stack fa-lg" style="color:#E14107" href="https://www.facebook.com/pages/Open-Source-Hacker/181710458567630">
+				<i class="fa fa-square fa-stack-2x"></i>
+				<i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-sm-4">
+		<div>@BasicCMSResource.Contact_Us</div>
+		<div>@BasicCMSResource.QA</div>
+	</div>
+</div>

@@ -1,0 +1,348 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeStudentPreference(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Student Preferences
+	</legend>
+	<h5>Please specify your preferences for students (if any)?</h5>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_StudentAgePreference,
+	   Title = "Student age preference", Column = 4, IsRequired = true
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_StudentGenderPreference,
+	   Title = "Student gender preference", Column = 4, IsRequired = true
+   })
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="FamilyStudentPreferenceReason">Reason for preference</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("StudentPreferenceReason", Model.StudentPreferenceReason, new { @class = "bcms-field-text", @autocomplete = "off", @style="height: 80px" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="StudentOtherPreferences">Other student preferences</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("StudentOtherPreferences", Model.StudentOtherPreferences, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+		   Classifications = Model.Classifications,
+		   SchemeCode = HostSchemeCodes.H_StudentDietary,
+		   Title = "Will you be able to accommodate students with special dietary requirements?", Column = 6, IsRequired = true,
+		   RenderMoreInfo = false
+		})
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@HostSchemeCodes.H_StudentDietary" style="display: none">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_StudentDietaryRequirements">Dietary requirements</label>
+				<div class="bcms-checkbox-block">
+					@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_StudentDietaryRequirements)))
+				</div>
+			</div>
+		</div>
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+		   Classifications = Model.Classifications,
+		   SchemeCode = HostSchemeCodes.H_StudentAllergies,
+		   Title = "Are you able to accommodate students with allergies?", Column = 6, IsRequired = true,
+		   RenderMoreInfo = false
+	   })
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@HostSchemeCodes.H_StudentAllergies" style="display: none">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_StudentAllergiesSupported">Types of allergies you can support</label>
+				<div class="bcms-checkbox-block">
+					@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_StudentAllergiesSupported)))
+				</div>
+			</div>
+		</div>
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+		   Classifications = Model.Classifications,
+		   SchemeCode = HostSchemeCodes.H_StudentDisabilities,
+		   Title = "Are you able to accommodate students with disabilities?", Column = 6, IsRequired = true,
+		   RenderMoreInfo = false
+	   })
+	</div>
+
+
+	<legend>
+		Laundry Facilities
+	</legend>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_LaundryFacilities">@RegistrationGlobalization.LaundryFacilities_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_LaundryFacilities" name="@HostSchemeCodes.H_LaundryFacilities">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_LaundryFacilities)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_LaundryFacilities" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div id="info_@HostSchemeCodes.H_LaundryFacilities" style="display: none">
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="bcms-content-titles" for="@HostSchemeCodes.H_LaundryDay">@RegistrationGlobalization.LaundryDay_Title <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						<select class="data-val-ignore" data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_LaundryDay" name="@HostSchemeCodes.H_LaundryDay">
+							@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_LaundryDay)))
+						</select>
+						<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_LaundryDay" data-valmsg-replace="true"></span>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="bcms-content-titles" for="@HostSchemeCodes.H_LaundryIsOutside">@RegistrationGlobalization.LaundryIsOutside_Title <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						<select class="data-val-ignore" data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_LaundryIsOutside" name="@HostSchemeCodes.H_LaundryIsOutside">
+							@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_LaundryIsOutside)))
+						</select>
+						<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_LaundryIsOutside" data-valmsg-replace="true"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<legend>
+		Bedrooms
+	</legend>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_NumberOfBedrooms">@RegistrationGlobalization.NumberOfBedrooms <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_NumberOfBedrooms" name="@HostSchemeCodes.H_NumberOfBedrooms">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_NumberOfBedrooms)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_NumberOfBedrooms" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_AvailableBedrooms">@RegistrationGlobalization.AvailableBedrooms <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_AvailableBedrooms" name="@HostSchemeCodes.H_AvailableBedrooms" showsetailsbyindex="true">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_AvailableBedrooms)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_AvailableBedrooms" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	for (int r = 0; r < Model.Classifications.Count(x => x.SchemeCode.Equals(HostSchemeCodes.H_AvailableBedrooms)); r++) {
+		ViewData["Group1"] = r;
+		var roomInfo = Model.GetBedRoom(r);
+		<div id="info_@(HostSchemeCodes.H_AvailableBedrooms)_Index_@r" class="info_group" style="display: none">
+			<div class="row">
+				<h4 class="col-sm-12">Student bedroom @(r + 1)</h4>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="RoomNo[@r]">Room No. <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("RoomNo[" + r + "]", roomInfo.Room.RoomNo, new { @class = "bcms-field-text", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+							<span class="bcms-field-validation-valid" data-valmsg-for="RoomNo[@r]" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_Type", GroupIndex = r,
+			   Title = "Type of room", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_FlooringType", GroupIndex = r,
+			   Title = "Type of flooring", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+			</div>
+			<div class="row">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_IsDetached", GroupIndex = r,
+			   Title = "Is the room detached from the main house?", Column = 4, IsRequired = false,
+			   ColumnForMoreInfo = 8
+		   })
+			</div>
+			<div class="row">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_InternalEnsuite", GroupIndex = r,
+			   Title = "Internal ensuite", Column = 4, IsRequired = false,
+			   ColumnForMoreInfo = 8
+		   })
+			</div>
+			<div class="row">
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_AvailableImmediately", GroupIndex = r,
+			   Title = "Is this room available immediately?", Column = 4, IsRequired = false, RenderMoreInfo = false
+		   })
+			</div>
+			<div class="row" id="info_R1_AvailableImmediately__@r" style="display: none">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="RoomAvailableFrom[@r]">Date room available "From"</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("RoomAvailableFrom[" + r + "]", roomInfo.Room.AvailableFrom, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="RoomAvailableTo[@r]">Date room available "To"</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("RoomAvailableTo[" + r + "]", roomInfo.Room.AvailableTo, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+						</div>
+					</div>
+				</div>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R1_CurrentlyHosting", GroupIndex = r,
+			   Title = "Are you currently hosting a student in this room?", Column = 4, IsRequired = false, RenderMoreInfo = false
+		   })
+				<div id="info_R1_CurrentlyHosting__@r" style="display: none">
+
+					@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications,
+				   SchemeCode = "R1_StudentAge", GroupIndex = r,
+				   Title = "Student age", Column = 4, IsRequired = false, RenderMoreInfo = false
+			   })
+					@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications,
+				   SchemeCode = "R1_StudentGender", GroupIndex = r,
+				   Title = "Student gender", Column = 4, IsRequired = false, RenderMoreInfo = false
+			   })
+					@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications,
+				   SchemeCode = "R1_StudentNationality", GroupIndex = r,
+				   Title = "Student nationality", Column = 4, IsRequired = false, RenderMoreInfo = false
+			   })
+					<div class="col-sm-4">
+						<div class="form-group">
+							<label class="bcms-content-titles" for="RoomDateLeaving[@r]">Date Leaving</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBox("RoomDateLeaving[" + r + "]", roomInfo.Room.DateLeaving,new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off", @data_val = "true", @data_val_required = "This field is required" })
+								<span class="bcms-field-validation-error" data-valmsg-for="RoomDateLeaving[@r]" data-valmsg-replace="true"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+	<legend>
+		Bathrooms
+	</legend>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_Bathrooms">@RegistrationGlobalization.Bathrooms <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_Bathrooms" name="@HostSchemeCodes.H_Bathrooms" showsetailsbyindex="true">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_Bathrooms)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_Bathrooms" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	for (int r = 0; r < Model.Classifications.Count(x => x.SchemeCode.Equals(HostSchemeCodes.H_Bathrooms)); r++) {
+		ViewData["Group1"] = r;
+		var roomInfo = Model.GetBathRoom(r);
+		<div id="info_@(HostSchemeCodes.H_Bathrooms)_Index_@r" class="info_group" style="display: none">
+			<div class="row">
+				<h4 class="col-sm-12">Bathroom @(r + 1)</h4>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="BathRoomNo[@r]">Room No. <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("BathRoomNo[" + r + "]", roomInfo.Room.RoomNo, new { @class = "bcms-field-text", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+							<span class="bcms-field-validation-valid" data-valmsg-for="BathRoomNo[@r]" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R2_Available", GroupIndex = r,
+			   Title = "Available to student", Column = 3, IsRequired = true,
+			   ColumnForMoreInfo = 3
+		   })
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for=""></label>
+						<div class="bcms-checkbox-block">
+							@Html.Partial("CheckedListItem", new CheckedListRenderItem() { Classifications = Model.Classifications.Where(x => x.SchemeCode.Equals("R2_Suite")), Group = r })
+						</div>
+					</div>
+				</div>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "R2_External", GroupIndex = r,
+			   Title = "External", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+			</div>
+		</div>
+	}
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="WillHostNationality">Will you host any nationality or cultural background?</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("WillHostNationality", Model.WillHostNationality, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="ServiceComments">Comments</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("ServiceComments", Model.ServiceComments, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<legend>
+		Why homestay with Austar?
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_HearAbout,
+	   Title = "How did you hear about Austar?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+	})
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

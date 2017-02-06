@@ -1,0 +1,189 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeHost6(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_FamilyMembers, ShowDetailsByIndex = true,
+	   Title = "How many members living in home?", Column = 4, IsRequired = true
+   })
+	</div>
+	<div>
+		@for (int r = 0; r < Model.Classifications.Count(x => x.SchemeCode.Equals(HostSchemeCodes.H_FamilyMembers)); r++) {
+			ViewData["Group1"] = r;
+			var m = Model.GetMember(r);
+			<div id="info_@(HostSchemeCodes.H_FamilyMembers)_Index_@r" class="info_group row" style="display: none">
+				<h4 class="col-sm-12">Member @(r + 1) Details</h4>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "M_Title", GroupIndex = r,
+			   Title = "Title", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="FirstName[@r]">First Name</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("FirstName[" + r + "]", m.Member.FirstName, new { @class = "bcms-field-text", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+							<span class="bcms-field-validation-valid" data-valmsg-for="FirstName[@r]" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="LastName[@r]">Last Name</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("LastName[" + r + "]", m.Member.LastName, new { @class = "bcms-field-text", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+							<span class="bcms-field-validation-valid" data-valmsg-for="LastName[@r]" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="BirthDate[@r]">Birth Date</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("BirthDate[" + r + "]", m.Member.BirthDate, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+							<span class="bcms-field-validation-valid" data-valmsg-for="BirthDate[@r]" data-valmsg-replace="true"></span>
+						</div>
+					</div>
+				</div>
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "M_Gender", GroupIndex = r,
+			   Title = "Gender", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "M_Role", GroupIndex = r,
+			   Title = "Family role", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+			   Classifications = Model.Classifications,
+			   SchemeCode = "M_Ethnicity", GroupIndex = r,
+			   Title = "Ethnicity", Column = 3, IsRequired = false,
+			   ColumnForMoreInfo = 3
+		   })
+				<div class="col-sm-3">
+					<div class="form-group">
+						<label class="bcms-content-titles" for="Occupation[@r]">Occupation</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBox("Occupation[" + r + "]", m.Member.Occupation, new { @class = "bcms-field-text", @autocomplete = "off" })
+						</div>
+					</div>
+				</div>
+
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications,
+				   SchemeCode = "M_Smoker", GroupIndex = r,
+				   Title = "Does this person smoke?", Column = 3, IsRequired = false,
+				   ColumnForMoreInfo = 3
+			   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications,
+				   SchemeCode = "M_SpeakOther", GroupIndex = r,
+				   Title = "Does this family member speak any languages other than English?", Column = 6, IsRequired = false,
+				   ColumnForMoreInfo = 6
+			   })
+				@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+				   SchemeCode = "M_Languages", GroupIndex = r,
+				   Title = "How many languages does this family member speak?", Column = 3, IsRequired = false,
+				   ColumnForMoreInfo = 6
+			   })
+				@for (int r1 = 0; r1 < Model.Classifications.Count(x => x.SchemeCode.Equals("M_Languages")); r1++) {
+					var lang = Model.GetMemberLanguage(r, r1);
+					<div id="info_M_Languages__@(r)_Index_@r1" class="info_group row" style="display: none">
+						@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+				   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+				   SchemeCode = "L_Languages", GroupIndex = r, GroupIndex2 = r1, SelectedValue = lang.Language,
+				   Title = string.Format("Language {0}", r1 + 1), Column = 6, IsRequired = false,
+				   ColumnForMoreInfo = 6
+			   })
+						@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+					   Classifications = Model.Classifications, ShowDetailsByIndex = true,
+					   SchemeCode = "L_LanguageProficiency", GroupIndex = r, GroupIndex2 = r1, SelectedValue = lang.Proficiency,
+					   Title = "Language proficiency", Column = 6, IsRequired = false,
+					   ColumnForMoreInfo = 6
+				   })
+					</div>
+				}
+				<div>
+					<div class="form-group">
+						<label class="bcms-content-titles" for="HaveWWCC[@r]">Do you have the "Working with Children" (WWCC) check completed (If you are over 18)?</label>
+						<div class="bcms-field-wrapper">
+							@if (!m.Member.HaveWWCC) {
+								<label>@Html.RadioButton(string.Format("HaveWWCC[{0}]", r), false, htmlAttributes: new { @checked="checked" }) No, please download and return the completed form: http://tinyurl.com/start-wwcc</label>
+								<label class="has-moreinfo">@Html.RadioButton(string.Format("HaveWWCC[{0}]", r), true, htmlAttributes: new { }) Yes, please provide details</label>
+							} else {
+								<label>@Html.RadioButton(string.Format("HaveWWCC[{0}]", r), false, htmlAttributes: new { }) No, please download and return the completed form: http://tinyurl.com/start-wwcc</label>
+								<label class="has-moreinfo">@Html.RadioButton(string.Format("HaveWWCC[{0}]", r), true, htmlAttributes: new { @checked = "checked" }) Yes, please provide details</label>
+							}
+						</div>
+						@*<div class="bcms-checkbox-block">
+								<div class="bcms-checkbox-holder has-moreinfo">
+									<input id="HaveWWCC_@(r)_" name="HaveWWCC[@r]" value="true" type="checkbox">
+									<input name="HaveWWCC[@r]" value="false" type="hidden">
+									<div class="bcms-checkbox-label bcms-js-edit-label">Yes, please provide details</div>
+								</div>
+							</div>*@
+					</div>
+				</div>
+				<div id="info_HaveWWCC_@(r)_" style="display: none">
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="bcms-content-titles" for="ClearanceNumber[@r]">Final clearance number</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBox("ClearanceNumber[" + r + "]", m.Member.ClearanceNumber, new { @class = "bcms-field-text data-val-ignore", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+								<span class="bcms-field-validation-valid" data-valmsg-for="ClearanceNumber[@r]" data-valmsg-replace="true"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label class="bcms-content-titles" for="ClearanceExpiryDate[@r]">Clearance expiry date</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBox("ClearanceExpiryDate[" + r + "]", m.Member.ClearanceExpiryDate, new { @class = "bcms-field-text data-val-ignore bcms-datepicker", @autocomplete = "off", @data_val = "true", @data_val_required = RegistrationGlobalization.Required })
+								<span class="bcms-field-validation-valid" data-valmsg-for="ClearanceExpiryDate[@r]" data-valmsg-replace="true"></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label class="bcms-content-titles" for="WWCCScannedCopy[@r]">Upload a scanned copy of the WWCC for this person</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBox("WWCCScannedCopy[" + r + "]", "", new { @type = "file", @class = "bcms-field-text data-val-ignore", @autocomplete = "off" })
+								<span class="bcms-field-validation-valid" data-valmsg-for="WWCCScannedCopy[@r]" data-valmsg-replace="true"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

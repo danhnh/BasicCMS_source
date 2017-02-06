@@ -1,0 +1,5 @@
+﻿@using BasicCMS.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+@{
+	Html.RenderAction("ContentMenu", "Site", new { area = string.Empty, languageCode = Model.Page.LanguageCode, pageId = Model.Page.Id, menuId = OptionsHelper.GetValue(Model.Options, "MenuId") });
+}

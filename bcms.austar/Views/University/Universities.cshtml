@@ -1,0 +1,196 @@
+﻿@using BetterCms.Module.Root.Mvc.Grids;
+@using BetterCms.Module.Root.ViewModels.Shared;
+@using BetterCms.Module.Root.ViewModels.SiteSettings;
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.Mvc.Grids.Extensions
+@using BetterCms.Module.Root.Mvc.Grids.TableRenderers
+@using BetterCms.Module.Root.Mvc.Grids.GridOptions
+@using Microsoft.Web.Mvc
+@using MvcContrib.UI.Grid
+@using bcms.austar.ViewModels
+@using bcms.austar.Content.Resources
+@using bcms.austar.Controllers
+@model SearchableGridViewModel<UniversityViewModel>
+@{ 
+	Action<ColumnBuilder<UniversityViewModel>> columns = column => {
+		column.EditButtonColumn();
+		column.For(m => m.Name)
+			   .Named(UniversityGlobalization.Name_Title)
+			   //.SortColumnName("Name")
+			   .Attributes(@class => "bcms-row-title");
+		column.For(m => m.ShortName)
+			   .Named(UniversityGlobalization.ShortName_Title)
+			   //.SortColumnName("ShortName")
+			   ;
+		column.For(m => m.StreetAddress)
+			   .Named(UniversityGlobalization.StreetAddress_Title)
+			   //.SortColumnName("StreetAddress")
+			   ;
+		column.HistoryButtonColumn();
+		column.DeleteButtonColumn();
+	};
+}
+
+@using (Html.BeginForm<UniversityController>(f => f.UniversitiesList(null), FormMethod.Post, new { @id = "bcms-sitemaps-form", @class = "bcms-ajax-form" })) {
+	@Html.MessagesBox()
+
+	<div class="bcms-window-settings">
+		@Html.HiddenGridOptions(Model.GridOptions)
+		<div class="bcms-top-block-holder">
+			<div class="bcms-btn-main" id="bcms-create-sitemap-button">@UniversityGlobalization.SiteSettings_AddNew</div>
+
+			<div class="bcms-top-block-inner">
+				<div class="bcms-btn-search" id="bcms-sitemaps-search-btn">@UniversityGlobalization.SiteSettings_Search</div>
+				<div class="bcms-search-block">
+					@Html.TextBoxFor(m => m.SearchQuery, new { @class = "bcms-search-field-box bcms-js-search-box bcms-search-query", @placeholder = RootGlobalization.WaterMark_Search })
+				</div>
+			</div>
+
+			<div class="bcms-top-block-pager">
+				@Html.RenderPaging(Model)
+			</div>
+		</div>
+
+		@Html.Grid(Model.Items).Sort(Model.GridOptions).Columns(columns).Attributes(@class => "bcms-tables").RenderUsing(new EditableHtmlTableGridRenderer<UniversityViewModel>())
+	</div>
+}
+
+<script type="text/html" id="bcms-sitemap-list-row-template">
+	@Html.Grid(new List<UniversityViewModel> { new UniversityViewModel() }).Columns(columns).Attributes(@class => "bcms-tables").RenderUsing(new HtmlTableGridSingleRowRenderer<UniversityViewModel>())
+</script>
+
+@*<div class="bcms-window-settings">
+	@{
+		var gridViewModel = new EditableGridViewModel { ShowMessages = true, TopBlockTitle = "Universities",
+			Columns = new List<EditableGridColumn> {
+				new EditableGridColumn("Name", "Name", "name") { AutoFocus = true, FocusIdentifier = "hasFocus" },
+				new EditableGridColumn("ShortName", "ShortName", "shortname"),
+				new EditableGridColumn("StreetAddress", "StreetAddress", "streetaddress"),
+				new EditableGridColumn("PostCode", "PostCode", "postcode"),
+				new EditableGridColumn("WebsiteUrl", "WebsiteUrl", "websiteurl") }
+		};
+	}
+
+	<div class="@gridViewModel.TopBlockClass">
+		<div class="bcms-top-controls-btn-holder">
+			@if (gridViewModel.CanAddNewItems) {
+				<div class="bcms-btn-main" data-bind="click: addNewItem">@gridViewModel.AddNewTitle</div>
+				<div class="bcms-btn-opener"> </div>
+				<div class="bcms-btn-opener-holder">
+					<div class="bcms-btn-opener-link" id="download-subscribers-in-csv">Download</div>
+				</div>
+			}
+		</div>
+		@if (gridViewModel.ShowSearch) {
+			<div class="bcms-top-block-inner" data-bind="css: { 'bcms-active-search' : searchEnabled }">
+				<div class="bcms-btn-search" data-bind="click: toggleSearch">@RootGlobalization.Button_Search</div>
+				<div class="bcms-search-block">
+					<input class="bcms-search-field-box" data-bind="value: options().searchQuery, valueUpdate: 'afterkeydown', enterPress: searchItems, hasfocus: options().hasFocus, enable: searchEnabled" type="text" placeholder="@RootGlobalization.WaterMark_Search" />
+				</div>
+			</div>
+		}
+		@if (gridViewModel.AddPaging) {
+			<div class="bcms-top-block-pager">
+				<!-- ko with: options().paging -->
+				<div class="bcms-featured-grid bcms-clearfix">
+					@Html.Partial(gridViewModel.PagingView, gridViewModel)
+				</div>
+				<!-- /ko -->
+			</div>
+		}
+	</div>
+
+	@if (gridViewModel.ShowMessages) {
+		@Html.MessagesBox(null, new Dictionary<string, string> { { "data-bind", "attr: { id: messagesDomId() }" } })
+	}
+
+	@{
+		var visibleColumns = gridViewModel.Columns.Where(c => c.IsRendered).ToList();
+		var visibleColumnsCount = visibleColumns.Count;
+	}
+
+	<table class="bcms-tables">
+		<thead>
+			<tr>
+				<th class="bcms-tables-nohover" style="width: 40px; padding: 0;">&nbsp;</th>
+				@foreach (var column in visibleColumns) {
+					@Html.Partial(column.HeaderView, column)
+				}
+				<th class="bcms-tables-nohover">&nbsp;</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- ko foreach: items -->
+			<tr data-bind="click: onOpen, css: {'bcms-table-row-active' : isActive() || isSelectedForInsert()}, attr: {id: getRowId()}">
+				<!-- ko if: saving() || deleting() -->
+				@if (gridViewModel.CanEditItems) {
+					<td class="bcms-tables-nohover">&nbsp;</td>
+                <!-- ko if: saving() -->
+					<td class="bcms-tables-nohover" colspan="@visibleColumnsCount">@RootGlobalization.Message_Saving</td>
+                <!-- /ko -->
+				}
+				@if (gridViewModel.CanEditItems) {
+					<td class="bcms-tables-nohover">&nbsp;</td>
+                <!-- ko if: deleting() -->
+					<td class="bcms-tables-nohover" colspan="@visibleColumnsCount">@RootGlobalization.Message_Deleting</td>
+                <!-- /ko -->
+				}
+				<!-- /ko -->
+				<!-- ko ifnot: saving() || deleting() -->
+				@if (gridViewModel.CanEditItems) {
+					<td>
+						<!-- ko if: !editingIsDisabled() -->
+						<div class="bcms-action-edit" data-bind="click: onEdit" title="@RootGlobalization.Button_Edit">@RootGlobalization.Button_Edit</div>
+						<!-- /ko -->
+					</td>
+				} else {
+					<td>&nbsp;</td>
+				}
+
+				@foreach (var column in visibleColumns) {
+					@Html.Partial(column.CellView, column)
+				}
+
+				@if (gridViewModel.CanDeleteItems) {
+                    <!-- ko if: !isActive() && !deletingIsDisabled() -->
+					<td style="width: 40px; padding: 10px 0;">
+						<div class="bcms-action-delete" data-bind="click: onDelete" title="@RootGlobalization.Button_Delete">@RootGlobalization.Button_Delete</div>
+					</td>
+                    <!-- /ko -->
+				}
+				@if (gridViewModel.CanEditItems) {
+                    <!-- ko if: isActive() -->
+					<td style="width: 120px;">
+						<div class="bcms-btn-primary" data-bind="click: onSave">@gridViewModel.SaveButtonTitle</div>
+						<div class="bcms-btn-cancel" data-bind="click: onCancelEdit">@RootGlobalization.Button_Cancel</div>
+					</td>
+                    <!-- /ko -->
+				}
+				@if (!gridViewModel.CanDeleteItems && !gridViewModel.CanEditItems) {
+					@:<td>&nbsp;</td>
+                }
+
+				<!-- /ko -->
+			</tr>
+			<!-- /ko -->
+			<!-- ko if: items().length == 0 -->
+			<tr>
+				<td colspan="@(visibleColumnsCount + 2)">
+					<div class="bcms-table-no-data">@RootGlobalization.Grid_NoDataAvailable_Message</div>
+				</td>
+			</tr>
+			<!-- /ko -->
+		</tbody>
+	</table>
+
+	@if (gridViewModel.AddHiddenFields) {
+        <!-- ko foreach: items -->
+		foreach (var column in gridViewModel.Columns) {
+			if (!string.IsNullOrWhiteSpace(column.HiddenFieldName)) {
+				<input type="hidden" name="" value="" data-bind="valueBinder: @(column.ValueBind), attr {name hiddenfieldname('@(column.HiddenFieldName)', $index()) }">
+			}
+		}
+        <!-- /ko -->
+	}
+</div>*@

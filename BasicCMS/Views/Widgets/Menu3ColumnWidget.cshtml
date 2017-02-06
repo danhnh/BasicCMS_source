@@ -1,0 +1,21 @@
+﻿@using BetterCms.Module.Root.Mvc.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+
+<div class="menu3col">
+	
+	<a href="#" class="col-sm-4 col-xs-12 item">
+		<div class="item-inner" style="background: url('@(Model.GetOptionValue<string>("imageurl1"))') no-repeat center center;">
+			<div class="item-title">@(Model.GetOptionValue<string>("title1"))</div>
+		</div>
+	</a>
+	<a href="#" class="col-sm-4 col-xs-12 item">
+		<div class="item-inner" style="background: url('@(Model.GetOptionValue<string>("imageurl2"))') no-repeat center center;">
+			<div class="item-title">@(Model.GetOptionValue<string>("title2"))</div>
+		</div>
+	</a>
+	<a href="#" class="col-sm-4 col-xs-12 item">
+		<div class="item-inner" style="background: url('@(Model.GetOptionValue<string>("imageurl3"))') no-repeat center center;">
+			<div class="item-title">@(Model.GetOptionValue<string>("title3"))</div>
+		</div>
+	</a>
+</div>

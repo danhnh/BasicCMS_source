@@ -1,0 +1,78 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeHost5(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="WillHostNationality">Extra emails we may reach you at</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("ExtraEmails", Model.ExtraEmails, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="GuestWellcomeMessage">Guest welcome message for your public profile</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("GuestWellcomeMessage", Model.GuestWellcomeMessage, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="PublicProfile">Public Profile</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("PublicProfile", Model.PublicProfile, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="AdditionalCosts">Additional Costs</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("AdditionalCosts", Model.AdditionalCosts, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="HouseholdOccupations">Household Occupations</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("HouseholdOccupations", Model.HouseholdOccupations, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="PublicComments">Comments</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("PublicComments", Model.PublicComments, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

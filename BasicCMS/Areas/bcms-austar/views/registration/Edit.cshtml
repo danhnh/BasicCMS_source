@@ -1,0 +1,311 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationFirstStep
+
+@using (Html.BeginForm<RegistrationController>(f => f.CreateUser(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+@*<form action="/bcms-austar/Registration/CreateUser" method="post" class="bcms-ajax-form">*@
+	@Html.MessagesBox()
+	<div class="row">
+		<div class="">
+			<div class="col-sm-6">
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="FirstName">Given name / @RegistrationGlobalization.FirstName <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.FirstName, new { @class = "bcms-field-text", @id = "FirstName" })
+							@Html.BcmsValidationMessageFor(f => f.FirstName)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="LastName">Family name / @RegistrationGlobalization.LastName <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.LastName, new { @class = "bcms-field-text", @id = "LastName" })
+							@Html.BcmsValidationMessageFor(f => f.LastName)
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="bcms-content-titles" for="user_email">@RegistrationGlobalization.Email <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBoxFor(f => f.Email, new { @class = "bcms-field-text check-email-unique", @id = "user_email" })
+						@Html.BcmsValidationMessageFor(f => f.Email)
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="bcms-content-titles" for="Password">@RegistrationGlobalization.Password <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						@Html.PasswordFor(f => f.Password, new { @class = "bcms-field-text", @id = "Password" })
+						@Html.BcmsValidationMessageFor(f => f.Password)
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="GenderId">@RegistrationGlobalization.Gender <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.DropDownListFor(f => f.GenderId, Model.GenderList, new { @id = "user_gender" })
+							@Html.BcmsValidationMessageFor(f => f.GenderId)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="DateOfBirth">@RegistrationGlobalization.DOB <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.DateOfBirth, new { @class = "bcms-field-text bcms-datepicker", @id = "user_dob" })
+							@Html.BcmsValidationMessageFor(f => f.DateOfBirth)
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="HomePhone">@RegistrationGlobalization.HomePhone <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.HomePhone, new { @class = "bcms-field-text", @id = "HomePhone" })
+							@Html.BcmsValidationMessageFor(f => f.HomePhone)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="MobilePhone">@RegistrationGlobalization.Mobile</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.MobilePhone, new { @class = "bcms-field-text", @id = "MobilePhone" })
+							@Html.BcmsValidationMessageFor(f => f.MobilePhone)
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label class="bcms-content-titles" for="StreetAddress">@RegistrationGlobalization.StreetAddress <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBoxFor(f => f.StreetAddress, new { @class = "bcms-field-text", @id = "user_streetAddress", @autocomplete = "off" })
+						@Html.BcmsValidationMessageFor(f => f.StreetAddress)
+					</div>
+				</div>
+				<div id="address_group" style="display: none;">
+					<div class="row">
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Address_UnitNo">Unit No</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Address_UnitNo, new { @class = "bcms-field-text", @id = "address_unit_number", @autocomplete = "off" })
+								@Html.BcmsValidationMessageFor(f => f.Address_UnitNo)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Address_StreetNo">Street No</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Address_StreetNo, new { @class = "bcms-field-text", @id = "address_street_number", @autocomplete = "off" })
+								@Html.BcmsValidationMessageFor(f => f.Address_StreetNo)
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="bcms-content-titles" for="Address_Route">Street Name</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.Address_Route, new { @class = "bcms-field-text", @id = "address_route" })
+							@Html.BcmsValidationMessageFor(f => f.Address_Route)
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label class="bcms-content-titles" for="Address_City">City</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Address_City, new { @class = "bcms-field-text", @id = "address_locality" })
+								@Html.BcmsValidationMessageFor(f => f.Address_City)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Address_State">State</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Address_State, new { @class = "bcms-field-text", @id = "address_administrative_area_level_1" })
+								@Html.BcmsValidationMessageFor(f => f.Address_State)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Address_PostCode">Postcode</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Address_PostCode, new { @class = "bcms-field-text", @id = "address_postal_code" })
+								@Html.BcmsValidationMessageFor(f => f.Address_PostCode)
+							</div>
+						</div>
+					</div>	
+				</div>
+
+				<div class="form-group">
+					<label class="bcms-content-titles" for="PostalAddress">@RegistrationGlobalization.PostalAddress <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-checkbox-holder">
+						<input checked="checked" id="PostalSameAsHome" name="PostalSameAsHome" type="checkbox" value="true">
+						<input name="PostalSameAsHome" type="hidden" value="false">
+						<div class="bcms-checkbox-label bcms-js-edit-label">@RegistrationGlobalization.PostalSameAsHome</div>
+					</div>
+					<div id="divPostalAddress" class="bcms-field-wrapper" style="display:none">
+						@Html.TextBoxFor(f => f.PostalAddress, new { @class = "bcms-field-text", @id = "user_postalAddress", @autocomplete = "off" })
+						@Html.BcmsValidationMessageFor(f => f.PostalAddress)
+					</div>
+				</div>
+				<div id="postal_group" style="display: none;">
+					<div class="row">
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Postal_UnitNo">Unit No</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Postal_UnitNo, new { @class = "bcms-field-text", @id = "postal_unit_number", @autocomplete = "off" })
+								@Html.BcmsValidationMessageFor(f => f.Postal_UnitNo)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Postal_StreetNo">Street No</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Postal_StreetNo, new { @class = "bcms-field-text", @id = "postal_street_number", @autocomplete = "off" })
+								@Html.BcmsValidationMessageFor(f => f.Postal_StreetNo)
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="bcms-content-titles" for="Postal_Route">Street Name</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.Postal_Route, new { @class = "bcms-field-text", @id = "postal_route" })
+							@Html.BcmsValidationMessageFor(f => f.Postal_Route)
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6 form-group">
+							<label class="bcms-content-titles" for="Postal_City">City</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Postal_City, new { @class = "bcms-field-text", @id = "postal_locality" })
+								@Html.BcmsValidationMessageFor(f => f.Postal_City)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Postal_State">State</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Postal_State, new { @class = "bcms-field-text", @id = "postal_administrative_area_level_1" })
+								@Html.BcmsValidationMessageFor(f => f.Postal_State)
+							</div>
+						</div>
+						<div class="col-sm-3 form-group">
+							<label class="bcms-content-titles" for="Postal_PostCode">Postcode</label>
+							<div class="bcms-field-wrapper">
+								@Html.TextBoxFor(f => f.Postal_PostCode, new { @class = "bcms-field-text", @id = "postal_postal_code" })
+								@Html.BcmsValidationMessageFor(f => f.Postal_PostCode)
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="submit" class="bcms-btn-tertiary" value="Next" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;libraries=places&amp;language=en&amp;key=AIzaSyCet7cB4t2NobTfSjGTlTPM7ELlesiofcw"></script>
+<script type="text/javascript">
+	var hostregistration = {},
+		autocomplete = null,
+		autocomplete2 = null,
+		componentForm = {
+			street_number: 'short_name',
+			route: 'long_name',
+			locality: 'long_name',
+			administrative_area_level_1: 'short_name',
+			country: 'long_name',
+			postal_code: 'short_name'
+		};
+
+	hostregistration.init = function () {
+		var $form = $("#registrationForm");
+		$("#user_dob").initializeDatepicker(datepicker.globalization.dateFormat);
+		$("#user_gender").select2({ minimumResultsForSearch: -1 });
+		$("#user_email").blur(function () {
+			if (!$(this).hasClass("bcms-input-validation-error")) {
+				$.post('/bcms-austar/registration/checkemail', { id: $(this).val() }, function (d) {
+					if (d.id != undefined) {
+						if (!d.valid) {
+							$("#user_email").addClass('bcms-input-validation-error');
+							$("#user_email").removeClass('valid');
+						} else if ($("#user_email").valid()) {
+							$("#user_email").removeClass('bcms-input-validation-error');
+							$("#user_email").addClass('valid');
+						}
+					}
+				});
+			}
+		});
+
+		$("#PostalSameAsHome").change(function () {
+			if ($(this).is(':checked')) {
+				$("#divPostalAddress").hide();
+				$("#postal_group").hide();
+				$("#user_postalAddress").val($("#user_streetAddress").val());
+			} else {
+				$("#user_postalAddress").val('');
+				$("#divPostalAddress").show();
+			}
+		});
+
+		autocomplete = new google.maps.places.Autocomplete($("#user_streetAddress")[0], { types: ['geocode'], componentRestrictions: { country: 'au' } });
+		autocomplete.addListener('place_changed', function () {
+			var place = autocomplete.getPlace();
+			var $addr = $("#address_group");
+			for (var i = 0; i < place.address_components.length; i++) {
+				var addressType = place.address_components[i].types[0];
+				if (componentForm[addressType]) {
+					var val = place.address_components[i][componentForm[addressType]];
+					var $inp = $addr.find("#address_" + addressType).val(val);
+				}
+			}
+			$("#user_streetAddress").val(place.formatted_address);
+			$addr.show();
+			if ($('#PostalSameAsHome').is(':checked')) $("#user_postalAddress").val(place.formatted_address);
+		});
+
+		autocomplete2 = new google.maps.places.Autocomplete($("#user_postalAddress")[0], { types: ['geocode'], componentRestrictions: { country: 'au' } });
+		autocomplete2.addListener('place_changed', function () {
+			var place = autocomplete2.getPlace();
+			var $addr = $("#postal_group");
+			for (var i = 0; i < place.address_components.length; i++) {
+				var addressType = place.address_components[i].types[0];
+				if (componentForm[addressType]) {
+					var val = place.address_components[i][componentForm[addressType]];
+					var $inp = $addr.find("#postal_" + addressType).val(val);
+				}
+			}
+			$("#user_postalAddress").val(place.formatted_address);
+			$addr.show();
+		});
+		$form.find('.bcms-checkbox-holder:has(input[type="checkbox"]) .bcms-js-edit-label').on('click', function () {
+			var checkBox = $(this).parents('.bcms-checkbox-holder, .bcms-edit-check-field').first().find('input[type="checkbox"]');
+			checkBox.trigger('click').trigger('change');
+			return false;
+		});
+		$form.on('submit', function (e) {
+			e.preventDefault();
+			var $this = $(this);
+			if ($this.valid()) {
+				$.post($this.attr("action"), $this.serialize()).done(function (d) {
+					messages.refreshBox($this, d);
+					if (d.Success) {
+						location.reload();
+					}
+				});
+			}
+			return false;
+		});
+
+	};
+
+	$(function () {
+		datepicker.init();
+		hostregistration.init();
+	});
+</script>

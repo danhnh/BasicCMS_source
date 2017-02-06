@@ -1,0 +1,372 @@
+﻿body {
+	font-family: 'Roboto', 'Open Sans', sans-serif !important; 
+	font-size: 14px;
+	line-height: 20px;
+	color: #000;
+}
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-family: 'Roboto', 'Open Sans', sans-serif !important; 
+}
+.font-semibold {
+	font-weight: 500;
+}
+a, a:active, a:hover, a:focus {
+	text-decoration: none;
+}
+.select2-hidden-accessible {
+	display: none;
+}
+/* Set padding to keep content from hitting the edges */
+/*.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+}*/
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+/*.dl-horizontal dt {
+	white-space: normal;
+}*/
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+	max-width: 280px;
+}*/
+.no-padding {
+	padding: 0px !important;
+}
+.m-r {
+	margin-right: 20px;
+}
+.m-r-sm {
+	margin-right: 10px;
+}
+.m-l {
+	margin-left: 20px;
+}
+.m-l-lg {
+	margin-left: 50px;
+}
+.m-l-n {
+	margin-left: 0px !important;
+}
+.m-t {
+	margin-top: 20px;
+}
+.m-b {
+	margin-bottom: 20px;
+}
+.m-b-sm {
+	margin-bottom: 10px;
+}
+.m-b-xs {
+	margin-bottom: 5px;
+}
+@media(max-width: 767px){
+	.m-n-xs {
+		margin: 0px !important;
+	}
+}
+.help-block {
+	font-style: italic;
+}
+.page {
+	color: #414141;
+	min-width: unset;
+}
+.page-frame, .page-block, .page-footer {
+	width: unset;
+}
+.page-block {
+	padding: 10px 0 55px;
+}
+.page-block > .page-frame > ul {
+	list-style: url(images/small-arrow-right.png) outside none;
+	padding: 10px 10px 10px 25px;
+	margin-left: 25px;
+}
+.page-block p {
+	text-align: justify;
+}
+.page-block > .page-frame > p, 
+.page-block > .page-frame > div.container, 
+.page-block > .page-frame > h4, 
+.page-block > .page-frame > h5 {
+	margin-left: 20px;
+}
+/*.page-block ul li:before {
+	content: "\f178";
+	font: normal normal normal 14px/1 FontAwesome;
+	display: inline-block;
+	margin-right: 5px;
+	color: #3878af;
+}*/
+.copyright {
+	color: #000;
+}
+.page-footer {
+	border-top: none;
+}
+.bcms-page-header {
+	background: none;
+	min-height: 50px;
+}
+
+.banner {
+	height: 150px;
+	width: 100%;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center;
+}
+.flagbar {
+	
+}
+.flag-icon {
+  background-size: contain;
+  background-position: 50%;
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 30px;
+  line-height: 20px;
+}
+.flag-icon:before {
+  content: "\00a0";
+}
+.flag-icon-en-AU {
+  background-image: url(images/flags/au.svg);
+}
+.flag-icon-vi-VN {
+  background-image: url(images/flags/vn.svg);
+}
+.navbar-nav { margin: 0px; }
+.navbar-nav > li.active > a, 
+.navbar-nav > li > a:hover, 
+.navbar-nav > li > a:focus{
+	font-weight:700;
+}
+.navbar-nav > li > a {
+	color: #000;
+	font-weight:700;
+}
+.nav > li.active > a,
+.nav > li > a:hover, 
+.nav > li > a:focus {
+	font-weight: 700;
+	background: none;
+	color: #3878af;
+}
+.header-nav > li > a {
+	padding: 5px 0px;
+	margin: 0px 10px;
+}
+.color-nav > li > a {
+	color: #fff;
+	background: #6f6f6f;
+	font-weight: normal;
+	padding: 5px 10px;
+}
+.color-nav > li:nth-child(2n+1) > a {
+	background: #689cca;
+}
+.color-nav > li > a:hover,
+.color-nav > li > a:focus,
+.color-nav > li.active > a {
+	color: #fff;
+	background: #e65c59;
+	font-weight: normal;
+}
+.color-nav > li > a > i.fa-long-arrow-right {
+	position: absolute;
+	right: 0px;
+	top: 1px;
+	font-size: 2em;
+}
+.nav-justified {
+	width: 100%;
+}
+.nav-justified>li{
+	float: none;
+}
+.logo-main {
+	margin-bottom: 15px;
+}
+.menu-main {
+	margin-top: 15px;
+}
+.bg-dark {
+	background: #6f6f6f;
+	color: #fff;
+}
+.dark-panel {
+	background: #6f6f6f;
+	color: #fff;
+	font-size: 90%;
+	padding: 15px 15px;
+}
+.blue-panel {	
+	background: #3878af;
+	color: #fff;
+	font-size: 90%;
+	padding: 15px 15px;
+}
+.register-link {
+	padding: 5px 15px;
+	font-weight: 500;
+}
+.partner-description {
+	font-size: 20px;
+	margin-top: 10px;
+	padding-right: 20px;
+}
+.text-justify {
+	text-align: justify;
+}
+.text-italic {
+	font-style: italic;
+}
+.text-red {
+	color: #e65c59;
+}
+.text-dark {
+	color: #185964;
+}
+.text-blue {
+	color: #3878af;
+}
+.bg-dark .text-blue {
+	color: #fff;
+}
+.text-bold {
+	font-weight: 700;
+}
+
+.feedback {
+	padding: 15px 10px;
+}
+.face-icon {
+	border-radius: 50%;
+	width: 70px;
+	height: 70px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+h4, .h4 {
+	color: #3878af;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+h5, .h5 {
+	color: #3878af;
+	font-weight: 400;
+	font-size: 14px;
+}
+
+.menu3col {
+	margin: 10px 0px;
+	padding: 0px;
+
+}
+.menu3col > a.item > .item-inner {
+	height: 300px;
+	padding-top: 250px;
+}
+.menu3col > a.item > .item-inner > .item-title {
+	width: 100%;
+	height: 50px;
+	line-height: 20px;
+	padding-top: 15px;
+	text-align: center;
+	background: #616161;
+	color: #fff;
+	filter: alpha(opacity=60);
+	/* IE */
+	-moz-opacity: 0.6;
+	/* Mozilla */
+	opacity: 0.6;
+}
+.menu3col > a.item:first-child{
+	padding-left: 0px;
+}
+.menu3col > a.item:last-child{
+	padding-right: 0px;
+}
+.menu3col:after,
+.menu3col:before {
+	display: table;
+	content: " ";
+}
+
+.menu3col:after {
+	clear: both;
+}
+.copyright {
+	font-family: 'Roboto', 'Open Sans', sans-serif !important; 
+	display: block;
+	float: none;
+}
+
+
+@media (min-width: 768px){
+	.nav-justified > li{
+		display: table-cell;
+		width: 1%;
+	}
+	.flagbar {
+		text-align: right;
+	}
+	.navbar-nav { 
+		margin-top: 10px; 
+	}
+	.header-nav > li:last-child > a {
+		margin-right: 0px;
+	}
+	.menu-main {
+		float: right;
+	}
+	.logo-main {
+		float: left;
+	}
+	.page {
+		min-width: 940px;
+	}
+	.page-block, .page-frame, .page-footer {
+		width: 940px;
+	}
+	.partner-description {
+		margin-top: 30px;
+	}
+}
+
+.has-moreinfo {
+	width: 100% !important;
+}
+
+.info_group{
+	clear: both;
+	border: solid 1px #3878af;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.select2-choice, .select2-choices{
+	z-index: 1;
+}
+
+textarea.bcms-field-text {
+	resize: none;
+	height: 80px;
+}
+
+.bcms-ajax-form {
+	clear: both;
+}

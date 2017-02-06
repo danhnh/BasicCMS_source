@@ -1,0 +1,30 @@
+﻿@using BasicCMS.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+@{
+	if (Model.Page != null && !string.IsNullOrEmpty(Model.Page.LanguageCode)) {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo(Model.Page.LanguageCode);
+	} else {
+		BasicCMSResource.Culture = CultureInfo.GetCultureInfo("en-CA");
+	}
+}
+<div class="container m-l-n no-padding">
+	<form class="form-horizontal">
+		<div class="@(Model.GetOptionValue<bool>("Fullwidth")?"container":"col-sm-6") dark-panel">
+			<div>
+				<input class="col-xs-12 input-sm m-b-xs" name="college" placeholder="@BasicCMSResource.School_name" />
+			</div>
+			<div>
+				<input class="col-xs-12 input-sm m-b-xs" name="collegeAddress" placeholder="@BasicCMSResource.Address" /></div>
+			<div>
+				<input class="col-xs-12 col-sm-6 input-sm m-b-xs" name="roomType" placeholder="@BasicCMSResource.Single_room" />
+				<input class="col-xs-12 col-sm-5 col-sm-offset-1 input-sm m-b-xs" name="arriveDate" placeholder="@BasicCMSResource.Arrival_date" />
+			</div>
+			<div>
+				<input class="col-xs-12 col-sm-6 input-sm m-b-xs" name="others" placeholder="@BasicCMSResource.Other_services" />
+				<input class="btn btn-sm col-xs-12 col-sm-offset-1 col-sm-5 btn-primary" name="submit" type="button" value="@BasicCMSResource.Search" />
+			</div>
+		</div>
+	</form>
+</div>
+

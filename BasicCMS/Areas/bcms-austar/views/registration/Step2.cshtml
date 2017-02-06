@@ -1,0 +1,199 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model HostRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeHost(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Dwelling Type
+	</legend>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_DwellingType">@RegistrationGlobalization.DwellingType_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.DwellingType_Title is required" id="@HostSchemeCodes.H_DwellingType" name="@HostSchemeCodes.H_DwellingType">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_DwellingType)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_DwellingType" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_MainFlooringType">@RegistrationGlobalization.MainFlooringType_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.MainFlooringType_Title is required" id="@HostSchemeCodes.H_MainFlooringType" name="@HostSchemeCodes.H_MainFlooringType">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_MainFlooringType)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_MainFlooringType" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group" id="info_@HostSchemeCodes.H_MainFlooringType" style="display: none">
+				<label class="bcms-content-titles" for="@(HostSchemeCodes.H_MainFlooringType)_info"></label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox(HostSchemeCodes.H_MainFlooringType + "_info", Model.GetClassificationInfoValue(HostSchemeCodes.H_MainFlooringType), new { @class = "bcms-field-text data-val-ignore", @autocomplete = "off", @data_val = "true", @data_val_required = "This field is required" })
+					<span class="bcms-field-validation-valid" data-valmsg-for="@(HostSchemeCodes.H_MainFlooringType)_info" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_InternetAvailable">@RegistrationGlobalization.InternetAvailable_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_InternetAvailable" name="@HostSchemeCodes.H_InternetAvailable">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_InternetAvailable)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_InternetAvailable" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_SmokingDetector">@RegistrationGlobalization.SmokingDetector_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_SmokingDetector" name="@HostSchemeCodes.H_SmokingDetector">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_SmokingDetector)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_SmokingDetector" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_Facilities">@RegistrationGlobalization.Facilities_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-checkbox-block">
+					@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_Facilities)))
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<legend>
+		Distance to Transport
+	</legend>
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_NearestBusStop">@RegistrationGlobalization.NearestBusStop_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_NearestBusStop" name="@HostSchemeCodes.H_NearestBusStop">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_NearestBusStop)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_NearestBusStop" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_NearestTrainStop">@RegistrationGlobalization.NearestTrainStop_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_NearestTrainStop" name="@HostSchemeCodes.H_NearestTrainStop">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_NearestTrainStop)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_NearestTrainStop" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="@HostSchemeCodes.H_NearestFerryStop">@RegistrationGlobalization.NearestFerryStop_Title <i class="fa fa-asterisk text-danger"></i></label>
+				<div class="bcms-field-wrapper">
+					<select data-val="true" data-val-required="@RegistrationGlobalization.Required" id="@HostSchemeCodes.H_NearestFerryStop" name="@HostSchemeCodes.H_NearestFerryStop">
+						@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_NearestFerryStop)))
+					</select>
+					<span class="bcms-field-validation-valid" data-valmsg-for="@HostSchemeCodes.H_NearestFerryStop" data-valmsg-replace="true"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<legend>
+		Details Regarding Insurances
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_PublicLiabilityInsurance,
+	   Title = "Do you have Public Liability insurance?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = HostSchemeCodes.H_HomeContentsInsurance,
+	   Title = "Do you have Home Contents insurance?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="row container">
+			<div class="col-sm-6">
+				<div class="form-group" id="info_@HostSchemeCodes.H_PublicLiabilityInsurance" style="display:none">
+					<label class="bcms-content-titles" for="PLInsuranceProvider">Insurance provider</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("PLInsuranceProvider", Model.PLInsuranceProvider, new { @class = "bcms-field-text", @autocomplete = "off" })
+					</div>
+					<label class="bcms-content-titles" for="PLInsuranceNumber">Insurance policy number</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("PLInsuranceNumber", Model.PLInsuranceNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+					</div>
+					<label class="bcms-content-titles" for="PLInsuranceExpiryDate">Insurance policy expiry date</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("PLInsuranceExpiryDate", Model.PLInsuranceExpiryDate, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+						<span class="bcms-field-validation-error" data-valmsg-for="PLInsuranceExpiryDate" data-valmsg-replace="true"></span>
+					</div>
+					<label class="bcms-content-titles" for="@HostSchemeCodes.H_20MPublicInsurance">Does it provide $20 million Public Liability cover?</label>
+					<div class="bcms-field-wrapper">
+						<select id="@HostSchemeCodes.H_20MPublicInsurance" name="@HostSchemeCodes.H_20MPublicInsurance">
+							@Html.Partial("DropdownListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(HostSchemeCodes.H_20MPublicInsurance)))
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group" id="info_@HostSchemeCodes.H_HomeContentsInsurance" style="display:none">
+					<label class="bcms-content-titles" for="HCInsuranceProvider">Insurance provider</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("HCInsuranceProvider", Model.HCInsuranceProvider, new { @class = "bcms-field-text", @autocomplete = "off" })
+					</div>
+					<label class="bcms-content-titles" for="HCInsuranceNumber">Insurance policy number</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("HCInsuranceNumber", Model.HCInsuranceNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+					</div>
+					<label class="bcms-content-titles" for="HCInsuranceExpiryDate">Insurance policy expiry date</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBox("HCInsuranceExpiryDate", Model.HCInsuranceExpiryDate, new { @class = "bcms-field-text bcms-datepicker", @autocomplete = "off" })
+						<span class="bcms-field-validation-error" data-valmsg-for="HCInsuranceExpiryDate" data-valmsg-replace="true"></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="HomeComments">Comments</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("HomeComments", Model.HomeComments, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Submit" />
+}
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

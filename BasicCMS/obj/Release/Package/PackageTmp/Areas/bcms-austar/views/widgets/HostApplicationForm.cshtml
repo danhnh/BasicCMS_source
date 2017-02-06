@@ -1,0 +1,11 @@
+﻿@if (User.IsInRole("AustarHost")) {
+<ul class="nav navbar-nav color-nav nav-justified" style="margin: 0px; padding: 0px; margin-bottom: 10px;">
+	<li><a href="/host/apply/?step=hostpage2">Home</a></li>
+	<li><a href="/host/apply/?step=hostpage3">Lifestyle</a></li>
+	<li><a href="/host/apply/?step=hostpage4">Service</a></li>
+	<li><a href="/host/apply/?step=hostpage5">Public</a></li>
+	<li><a href="/host/apply/?step=hostpage6">List all Residents</a></li>
+	<li><a href="/host/apply/?step=hostpage7">Banking info</a></li>
+</ul>
+}
+@{ Html.RenderAction("Create", "Registration", new { Area = "bcms-austar", step = Request.Params["step"] }); }

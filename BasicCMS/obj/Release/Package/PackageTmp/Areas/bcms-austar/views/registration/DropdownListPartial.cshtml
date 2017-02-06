@@ -1,0 +1,25 @@
+﻿@using bcms.austar.Models
+@model IEnumerable<Classification>
+@{ 
+	List<UserChoice> choices = ViewData["Choices"] as List<UserChoice>;
+	List<RoomInfo> rooms = null;
+	List<MemberInfo> members = null;
+	if (ViewData["Rooms"] != null && ViewData["Group1"] != null) {
+		rooms = (ViewData["Rooms"] as List<RoomInfo>).Where(x=>x.Room.RoomIndex == (int)ViewData["Group1"]).ToList();
+	}
+	if (ViewData["Members"] != null && ViewData["Group1"] != null) {
+		members = (ViewData["Members"] as List<MemberInfo>).Where(x => x.Member.MemberIndex == (int)ViewData["Group1"]).ToList();
+	}
+}
+<option selected="selected" value="">Please select...</option>
+@foreach (var c in Model.OrderBy(x => x.SortOrder)) {
+	bool isSelected = choices.Count(x => x.Classification.Equals(c) && x.IsSelected) > 0
+		|| (rooms != null && rooms.Count(x => x.Classification.Equals(c) && x.IsSelected) > 0)
+		|| (members != null && members.Count(x => x.Classification.Equals(c) && x.IsSelected) > 0)
+		|| c.Equals(ViewData["SelectedClassification"]);
+	if (c.RequireMoreInfo) {
+	<option value="@c.Id" @(isSelected?"selected=\"selected\"":"") data-moreinfo="@c.Description">@c.Name</option>
+	} else {
+	<option value="@c.Id" @(isSelected?"selected=\"selected\"":"")>@c.Name</option>
+	}
+}

@@ -1,0 +1,11 @@
+﻿@using BasicCMS.Helpers
+@model BetterCms.Module.Root.ViewModels.Cms.RenderWidgetViewModel
+<div class="logo-main">
+	<img src="@Url.Content("~/Content/images/logo_w.jpg")" alt="" style="height: 70px;"/>
+</div>
+<div class="menu-main">
+	@{
+		//var languageCode = OptionsHelper.GetValue(Model.Options, "languageCode");
+		Html.RenderAction("SitemapMenu", "Site", new { area = string.Empty, languageCode = Model.Page.LanguageCode, pageId = Model.Page.Id });
+	}
+</div>

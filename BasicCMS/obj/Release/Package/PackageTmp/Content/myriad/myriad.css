@@ -1,0 +1,15 @@
+﻿@font-face {
+    font-family: 'MyriadPro';
+	font-weight: 400;
+    src: url('myriad-web-pro.eot');
+    src: url('myriad-web-pro.eot') format('embedded-opentype'),
+    	 url('myriad-web-pro.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'MyriadPro';
+	font-weight: 600;
+    src: url('myriadpro-semibold.eot');
+    src: url('myriadpro-semibold.eot') format('embedded-opentype'),
+         url('myriadpro-semibold.woff') format('woff');
+}

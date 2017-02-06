@@ -1,0 +1,32 @@
+﻿@model BasicCMS.Models.SitemapMenuViewModel
+@if (Model != null && Model.MenuItems != null)
+{
+	<ul class="nav navbar-nav color-nav nav-justified">
+		@foreach (var item in Model.MenuItems) {
+			if (item.PageId.HasValue && !item.IsPublished) { continue; }
+			if (item.PageId.HasValue && Model.PageId.Equals(item.PageId)) {
+				<li class="active"><a href="@item.Url">@item.Caption.ToUpper() <i class="fa fa-long-arrow-right"></i></a></li>
+			} else {
+				<li><a href="@item.Url">@item.Caption.ToUpper() <i class="fa fa-long-arrow-right"></i></a></li>
+			}
+		}
+	</ul>
+}
+@*<h2>New <i>@(Model.LanguageCode ?? "default Language")</i> items:</h2>
+@if (Model != null && Model.MenuItems != null)
+{
+	foreach (var item in Model.MenuItems)
+	{
+		@item.Caption <a href="@item.Url"><span>@item.Url</span></a> @(item.IsPublished ? "(Live)" : "")<br />
+	}
+}
+@if (Model != null && Model.RenderIFrame && Model.LanguageCodes != null)
+{
+	foreach (var lang in Model.LanguageCodes)
+	{
+		<hr />
+
+
+		<iframe style="padding: 0; overflow: auto; border: 0; width: 1000px; height: 200px;" src="~/SitemapMenu?languageCode=@(lang)"></iframe>
+	}
+}*@

@@ -1,0 +1,173 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using BasicCMS.Models
+@using bcms.austar
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model StudentRegistrationViewModel
+
+@using (Html.BeginForm<RegistrationController>(f => f.DescribeStudentMore(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<legend>
+		Homestay Family Preferences
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_WithChildrenU10,
+	   Title = "Can you live with children 0-10 years old?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 4
+   })
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_WithChildrenU17,
+	   Title = "Can you live with children 11-17 years old?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 4
+   })
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="HostPreferenceReason">Reason for preference?</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("HostPreferenceReason", Model.HostPreferenceReason, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="HostOtherPreferences">Other family preferences?</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextArea("HostOtherPreferences", Model.HostOtherPreferences, new { @class = "bcms-field-text", @autocomplete = "off", @style = "height: 80px" })
+				</div>
+			</div>
+		</div>
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_WithSmoker,
+	   Title = "Will you stay with a family that includes a smoker?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 4
+   })
+	</div>
+	<legend>
+		Your Present Health
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Dietary,
+	   Title = "Will you have any special dietary requirements?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@StudentSchemeCodes.S_Dietary" style="display: none">
+				<label class="bcms-content-titles" for="@StudentSchemeCodes.S_DietaryRequirements">Dietary requirements</label>
+				<div class="bcms-checkbox-block">
+					@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(StudentSchemeCodes.S_DietaryRequirements)))
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Allergies,
+	   Title = "Do you have any allergies?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = false
+   })
+		<div class="col-sm-6">
+			<div class="form-group" id="info_@StudentSchemeCodes.S_Allergies" style="display: none">
+				<label class="bcms-content-titles" for="@StudentSchemeCodes.S_TypeOfAllergies">Types of allergies you have</label>
+				<div class="bcms-checkbox-block">
+					@Html.Partial("CheckedListPartial", Model.Classifications.Where(x => x.SchemeCode.Equals(StudentSchemeCodes.S_TypeOfAllergies)))
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Medication,
+	   Title = "Do you currently take any medication?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 6
+   })
+	</div>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Disabilities,
+	   Title = "Do you have any disabilities?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 6
+   })
+	</div>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_Smoke,
+	   Title = "Do you smoke?", Column = 6, IsRequired = true,
+	   ColumnForMoreInfo = 6
+   })
+	</div>
+	<legend>
+		Why homestay with Austar?
+	</legend>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_HearAbout,
+	   Title = "How did you hear about Austar?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = true, ColumnForMoreInfo = 11
+   })
+	</div>
+	<div class="row">
+		@Html.Partial("ClassificationSelectItem", new ClassificationRenderItem(Model) {
+	   Classifications = Model.Classifications,
+	   SchemeCode = StudentSchemeCodes.S_ReasonForChoosing,
+	   Title = "Your reason for choosing homestay accommodation?", Column = 6, IsRequired = true,
+	   RenderMoreInfo = true, ColumnForMoreInfo = 11
+   })
+	</div>
+	<legend>
+		Details of College/Institution
+	</legend>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="College">Name of College/Institution you will study at</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("College", Model.College, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="Campus">Campus</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("Campus", Model.Campus, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-11">
+			<div class="form-group">
+				<label class="bcms-content-titles" for="CollegeAddress">CollegeAddress</label>
+				<div class="bcms-field-wrapper">
+					@Html.TextBox("CollegeAddress", Model.CollegeAddress, new { @class = "bcms-field-text", @autocomplete = "off" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" value="@Model.Id" name="Id">
+	<input type="submit" class="bcms-btn-tertiary" value="Next" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>

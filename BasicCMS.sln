@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicCMS", "BasicCMS\BasicCMS.csproj", "{6A7AE3C8-D0C4-47AF-8E23-543AE4D2C768}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bcms.austar", "bcms.austar\bcms.austar.csproj", "{568485F6-0206-440B-8ABB-1849B0024357}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A7AE3C8-D0C4-47AF-8E23-543AE4D2C768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A7AE3C8-D0C4-47AF-8E23-543AE4D2C768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A7AE3C8-D0C4-47AF-8E23-543AE4D2C768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A7AE3C8-D0C4-47AF-8E23-543AE4D2C768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{568485F6-0206-440B-8ABB-1849B0024357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{568485F6-0206-440B-8ABB-1849B0024357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{568485F6-0206-440B-8ABB-1849B0024357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{568485F6-0206-440B-8ABB-1849B0024357}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

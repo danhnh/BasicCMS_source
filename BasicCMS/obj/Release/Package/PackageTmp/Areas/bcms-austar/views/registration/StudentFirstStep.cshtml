@@ -1,0 +1,108 @@
+﻿@using BetterCms.Module.Root
+@using BetterCms.Module.Root.Content.Resources
+@using BetterCms.Module.Root.Mvc.Helpers
+@using BetterCms.Module.Root.ViewModels.Security
+@using BetterCms.Module.Root.ViewModels.Shared
+@using Microsoft.Web.Mvc
+@using bcms.austar.Content.Resources
+@using bcms.austar.ViewModels
+@using bcms.austar.Controllers
+@model StudentRegistrationFirstStep
+
+@using (Html.BeginForm<RegistrationController>(f => f.CreateStudentUser(null), FormMethod.Post, new { @class = "bcms-ajax-form", @id = "registrationForm" })) {
+	@Html.MessagesBox()
+	<div class="row">
+		<div class="">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label class="bcms-content-titles" for="user_email">@RegistrationGlobalization.Email <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBoxFor(f => f.Email, new { @class = "bcms-field-text check-email-unique", @id = "user_email" })
+						@Html.BcmsValidationMessageFor(f => f.Email)
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="FirstName">@RegistrationGlobalization.FirstName <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.FirstName, new { @class = "bcms-field-text", @id = "FirstName" })
+							@Html.BcmsValidationMessageFor(f => f.FirstName)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="LastName">@RegistrationGlobalization.LastName <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.LastName, new { @class = "bcms-field-text", @id = "LastName" })
+							@Html.BcmsValidationMessageFor(f => f.LastName)
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="bcms-content-titles" for="Password">@RegistrationGlobalization.Password <i class="fa fa-asterisk text-danger"></i></label>
+					<div class="bcms-field-wrapper">
+						@Html.PasswordFor(f => f.Password, new { @class = "bcms-field-text", @id = "Password" })
+						@Html.BcmsValidationMessageFor(f => f.Password)
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="GenderId">@RegistrationGlobalization.Gender <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.DropDownListFor(f => f.GenderId, Model.GenderList, new { @id = "user_gender" })
+							@Html.BcmsValidationMessageFor(f => f.GenderId)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="DateOfBirth">@RegistrationGlobalization.DOB <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.DateOfBirth, new { @class = "bcms-field-text bcms-datepicker", @id = "user_dob" })
+							@Html.BcmsValidationMessageFor(f => f.DateOfBirth)
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="HomePhone">@RegistrationGlobalization.HomePhone</label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.HomePhone, new { @class = "bcms-field-text", @id = "HomePhone" })
+							@Html.BcmsValidationMessageFor(f => f.HomePhone)
+						</div>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label class="bcms-content-titles" for="MobilePhone">@RegistrationGlobalization.Mobile <i class="fa fa-asterisk text-danger"></i></label>
+						<div class="bcms-field-wrapper">
+							@Html.TextBoxFor(f => f.MobilePhone, new { @class = "bcms-field-text", @id = "MobilePhone" })
+							@Html.BcmsValidationMessageFor(f => f.MobilePhone)
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="form-group">
+					<label class="bcms-content-titles" for="PassportNumber">Passport Number</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBoxFor(f => f.PassportNumber, new { @class = "bcms-field-text", @autocomplete = "off" })
+						@Html.BcmsValidationMessageFor(f => f.PassportNumber)
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="bcms-content-titles" for="PassportExpiryDate">Passport Expiry Date</label>
+					<div class="bcms-field-wrapper">
+						@Html.TextBoxFor(f => f.PassportExpiryDate, new { @class = "bcms-field-text bcms-datepicker" })
+						@Html.BcmsValidationMessageFor(f => f.PassportExpiryDate)
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="submit" class="bcms-btn-tertiary" value="Next" />
+}
+
+<script src="~/file/bcms-austar/scripts/select2.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.js"></script>
+<script src="~/file/bcms-austar/scripts/validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.ui.core.js"></script>
+<script src="~/Scripts/jquery.ui.datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/datepicker.js"></script>
+<script src="~/file/bcms-austar/scripts/messages.js"></script>
+<script src="~/file/bcms-austar/scripts/regform.js"></script>
